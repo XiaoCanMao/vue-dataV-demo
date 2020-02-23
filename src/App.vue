@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <datav />
+    <datav/>
   </div>
 </template>
 
 <script>
-import datav from './components/datav/index.vue'
+import datav from './components/index.vue'
 
 export default {
   name: 'app',
