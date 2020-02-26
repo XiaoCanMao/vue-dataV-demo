@@ -8,6 +8,7 @@
           <MediaDistrictPie slot="media-district-pie"></MediaDistrictPie>
           <trafficStatic slot="traffic-static"></trafficStatic>
           <BmapComponent slot="bmap-com"></BmapComponent>
+          <VideoMonitor slot="video-monitor"></VideoMonitor>
         </Container>
       <!-- <dv-border-box-1 class="main-container"> -->
         <!-- <div class="mc-top"> -->
@@ -36,6 +37,7 @@
 </template>
 
 <script>
+import { getData } from '../server'
 import Header from './header'
 import Container from './container'
 import EarlyWarnBoard from './early-warn-board'
@@ -43,6 +45,7 @@ import MonitTrendChart from './monit-trend-chart'
 import MediaDistrictPie from './media-district-pie'
 import trafficStatic from './traffic-static'
 import BmapComponent from './bmap-component'
+import VideoMonitor from './video-monitor'
 // import TopLeftCmp from './TopLeftCmp'
 // import TopMiddleCmp from './TopMiddleCmp'
 // import TopRightCmp from './TopRightCmp'
@@ -64,7 +67,8 @@ export default {
     EarlyWarnBoard,
     MonitTrendChart,
     MediaDistrictPie,
-    trafficStatic
+    trafficStatic,
+    VideoMonitor
     // TopLeftCmp,
     // TopMiddleCmp,
     // TopRightCmp,
@@ -76,7 +80,15 @@ export default {
     // BottomRightTable4
   },
   data () {
+    this.initData()
     return {}
+  },
+  methods: {
+    initData() {
+      getData().then((data) => {debugger;
+        console.log(data)
+      })
+    }
   }
 }
 </script>

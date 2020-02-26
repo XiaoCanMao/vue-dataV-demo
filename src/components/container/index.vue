@@ -51,7 +51,9 @@
         </dv-border-box-11>
       </div>
       <div class="ri-bottom">
-        <dv-border-box-7></dv-border-box-7>
+        <dv-border-box-7>
+          <slot name="video-monitor"></slot>
+        </dv-border-box-7>
       </div>
     </div>
   </div>
