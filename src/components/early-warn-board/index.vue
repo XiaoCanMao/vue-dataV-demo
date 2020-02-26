@@ -156,7 +156,6 @@ export default {
     setConfig (list) {
       const config1 = this.config1
       const data = this.getListStyle(list)
-      console.log(data)
       this.config1 = {
         ...config1,
         data
