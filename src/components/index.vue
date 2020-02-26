@@ -101,6 +101,7 @@ export default {
         this.earlyConf = this.getEarlyConf(data)
         this.monitConf = this.getMonitorConf(data.todaymission)
         this.digitalConf = this.getDigtalConf(data.introduction)
+        this.mediaConf = this.getMediaConf(data.media)
       })
     },
     getEarlyConf (data) {
@@ -119,6 +120,11 @@ export default {
     },
     getDigtalConf (conf) {
       return [...conf]
+    },
+    getMediaConf (conf) {
+      return {
+        ...conf
+      }
     }
   },
   mounted () {
