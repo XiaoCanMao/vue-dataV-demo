@@ -5,12 +5,25 @@
       <dv-charts :option="option2"></dv-charts>
     </div>
     <div>
-      <dv-scroll-board class="dv-scroll-board" ref="board" :config="config" style="width:100%;height:100%" />
+      <dv-scroll-board class="dv-scroll-board" ref="board" :config="config1" style="width:100%;height:100%" />
     </div>
   </div>
 </template>
 <script>
 export default {
+  props: {
+    config: {
+      type: Object,
+      default () {
+        return {
+          title: '',
+          circular: [],
+          lists: [],
+          total: 0
+        }
+      }
+    }
+  },
   data () {
     let series = {
       type: 'gauge',
@@ -39,7 +52,11 @@ export default {
     }
     let details = {
       show: true,
-      formatter: '{value}',
+      // formatter: '{value}',
+      formatter: (item) => {
+        let count = item.count ? item.count : 0
+        return `${count}台`
+      },
       offset: [0, 11],
       style: {
         fill: '#1ed3e5',
@@ -58,7 +75,7 @@ export default {
           {
             ...series,
             data: [
-              { name: '异常', value: 65, gradient: ['#990000', '#990066', '#990099'] }
+              { name: '异常', value: 100, gradient: ['#990000', '#990066', '#990099'] }
             ],
             details
           }
@@ -73,31 +90,16 @@ export default {
           {
             ...series,
             data: [
-              { name: '离线', value: 89, gradient: ['#777777', '#999999', '#BBBBBB'] }
+              { name: '离线', value: 100, gradient: ['#777777', '#999999', '#BBBBBB'] }
             ],
             details
           }
         ]
       },
-      config: {
+      config1: {
         rowNum: 7,
         align: ['center'],
         data: [
-          ['<span style="color:#990000;">菜市场LED电子屏xxxxxx</span>'],
-          ['<span style="color:#37a2da;">菜市场LED电子屏xxxxxx</span>'],
-          ['<span style="color:#37a2da;">菜市场LED电子屏xxxxxx</span>'],
-          ['<span style="color:#777777;">菜市场LED电子屏</span>'],
-          ['<span style="color:#990000;">菜市场LED电子屏</span>'],
-          ['<span style="color:#777777;">菜市场LED电子屏</span>'],
-          ['<span style="color:#37a2da;">菜市场LED电子屏</span>'],
-          ['<span style="color:#990000;">菜市场LED电子屏</span>'],
-          ['<span style="color:#37a2da;">菜市场LED电子屏</span>'],
-          ['<span style="color:#990000;">菜市场LED电子屏</span>'],
-          ['<span style="color:#37a2da;">菜市场LED电子屏</span>'],
-          ['<span style="color:#37a2da;">菜市场LED电子屏</span>'],
-          ['<span style="color:#990000;">菜市场LED电子屏</span>'],
-          ['<span style="color:#990000;">菜市场LED电子屏</span>'],
-          ['<span style="color:#990000;">菜市场LED电子屏</span>']
         ],
         evenRowBGC: '#404a5900',
         oddRowBGC: '#404a5900'
@@ -105,11 +107,73 @@ export default {
       }
     }
   },
+  watch: {
+    config: function (val, old) {
+      this.setOption(val)
+      this.setConfig(val.lists)
+    }
+  },
+  methods: {
+    setOption (config) {
+      const total = config.total
+      const [cir1, cir2] = config.circular
+      const val1 = cir1 ? cir1.value : 0
+      const val2 = cir2 ? cir2.value : 0
+
+      this.setOption1(total, val1)
+      this.setOption2(total, val2)
+    },
+    setOption1 (total, value) {
+      const option = this.option1
+      this.option1 = this.getOptions(total, value, option)
+    },
+    setOption2 (total, value) {
+      const option = this.option2
+      this.option2 = this.getOptions(total, value, option)
+    },
+    getOptions (total, value, options) {
+      let val = (value / total).toFixed(2) * 100
+
+      const series = options.series
+      options.series = series.map(serItem => {
+        let data = serItem.data
+        data = data.map(item => {
+          return {
+            ...item,
+            value: val,
+            count: value
+          }
+        })
+
+        return {
+          ...serItem,
+          data
+        }
+      })
+
+      return { ...options }
+    },
+    setConfig (list) {
+      const config1 = this.config1
+      const data = this.getListStyle(list)
+      console.log(data)
+      this.config1 = {
+        ...config1,
+        data
+      }
+    },
+    getListStyle (list) {
+      return list.map(item => [`<span style="color:#37a2da;">${item.title}</span>`])
+    }
+  },
   computed: {
     rowHeights () {
       let data = this.config.data || []
       return Array(data.length).fill(35)
     }
+  },
+  mounted () {
+    // this.setOption(this.config)
   }
 }
 </script>

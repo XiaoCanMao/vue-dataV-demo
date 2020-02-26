@@ -3,12 +3,12 @@
       <dv-full-screen-container>
         <Header class="main-header"></Header>
         <Container class="main-container">
-          <EarlyWarnBoard slot="early-warn-board"></EarlyWarnBoard>
-          <MonitTrendChart slot="monit-trend-chart"></MonitTrendChart>
-          <MediaDistrictPie slot="media-district-pie"></MediaDistrictPie>
-          <trafficStatic slot="traffic-static"></trafficStatic>
-          <BmapComponent slot="bmap-com"></BmapComponent>
-          <VideoMonitor slot="video-monitor"></VideoMonitor>
+          <EarlyWarnBoard slot="early-warn-board" :config="earlyConf"></EarlyWarnBoard>
+          <MonitTrendChart slot="monit-trend-chart" :config="monitConf"></MonitTrendChart>
+          <MediaDistrictPie slot="media-district-pie" :config="mediaConf"></MediaDistrictPie>
+          <trafficStatic slot="traffic-static" :config="trafficConf"></trafficStatic>
+          <BmapComponent slot="bmap-com" :config="bmapConf"></BmapComponent>
+          <VideoMonitor slot="video-monitor" :config="videaConf"></VideoMonitor>
         </Container>
       <!-- <dv-border-box-1 class="main-container"> -->
         <!-- <div class="mc-top"> -->
@@ -81,13 +81,29 @@ export default {
   },
   data () {
     this.initData()
-    return {}
+    return {
+      earlyConf: {},
+      monitConf: {},
+      mediaConf: {},
+      trafficConf: {},
+      bmapConf: {},
+      videaConf: {}
+    }
   },
   methods: {
-    initData() {
-      getData().then((data) => {debugger;
-        console.log(data)
+    initData () {
+      getData().then(({ data }) => {
+        this.earlyConf = this.getEarlyConf(data)
       })
+    },
+    getEarlyConf (data) {
+      const total = data.introduction[0].value + data.introduction[2].value
+      const earlyConf = {
+        ...data.alarmtoday,
+        total
+      }
+
+      return earlyConf
     }
   }
 }
