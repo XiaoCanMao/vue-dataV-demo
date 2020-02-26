@@ -5,6 +5,7 @@
       <dv-digital-flop :config="{number: [item.value],content: `{nt}${item.unit}`, style:{fontSize: 18, textAlign:'right'}}"/>
     </dv-border-box-13>
   </div>
+</template>
 <script>
 export default {
   props: {
