@@ -56,7 +56,7 @@ export default {
     initVideo () {
       const EZUIKit = global.EZUIKit
       const player = new EZUIKit.EZUIPlayer('video-monitor-component')
-      player.on('log', (str) => console.log(str))
+      player.on('log', (str) => {})
     }
   },
   mounted () {
