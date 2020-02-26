@@ -4,27 +4,41 @@
   </div>
 </template>
 <script>
+import moment from 'moment'
+
 export default {
+  props: {
+    config: {
+      type: Object,
+      default () {
+        return {
+          data: [],
+          title: ''
+        }
+      }
+    }
+  },
+  watch: {
+    config: function (val, old) {
+      this.setConfig(val)
+    }
+  },
   data () {
     return {
       option: {
         legend: {
           data: [
             {
-              name: '收费系统',
+              name: '监播次数',
               color: '#00baff'
             },
             {
-              name: '监控系统',
+              name: '媒体数',
               color: '#ff5ca9'
             },
             {
-              name: '通信系统',
+              name: '报警媒体数',
               color: '#3de7c9'
-            },
-            {
-              name: '供配电系统',
-              color: '#f5d94e'
             }
           ],
           textStyle: {
@@ -66,9 +80,9 @@ export default {
           },
           axisTick: {
             show: false
-          },
-          min: 0,
-          max: 8
+          }
+          // min: 0,
+          // max: 8
         },
         series: [
           {
@@ -99,27 +113,6 @@ export default {
             }
           },
           {
-            name: '通信系统',
-            data: [
-              1.3, 2.3, 5.3, 5.3, 6.3, 5.3, 1.3
-            ],
-            type: 'line',
-            smooth: true,
-            lineArea: {
-              show: true,
-              gradient: ['rgba(55, 162, 218, 0.6)', 'rgba(55, 162, 218, 0)']
-            },
-            lineStyle: {
-              lineDash: [5, 5]
-            },
-            linePoint: {
-              radius: 4,
-              style: {
-                fill: '#00db95'
-              }
-            }
-          },
-          {
             data: [
               0.2, 1.2, 4.2, 4.2, 5.2, 4.2, 0.2
             ],
@@ -143,87 +136,77 @@ export default {
         ]
       }
     }
-  }
-  // methods: {
-  //   initChart () {
-  //   getOptions () {
-  //     const option = {
-  //       // title: {
-  //       //   text: '周销售额趋势'
-  //       // },
-  //       legend: {
-  //         data: [
-  //           {
-  //             name: '销售额',
-  //             color: '#aeeff0'
-  //           },
-  //           {
-  //             name: '人流量',
-  //             color: '#f1829f'
-  //           }
-  //         ]
-  //       },
-  //       xAxis: {
-  //         data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-  //       },
-  //       yAxis: [
-  //         {
-  //           name: '销售额',
-  //           data: 'value'
-  //         },
-  //         {
-  //           name: '人流量',
-  //           data: 'value',
-  //           position: 'right',
-  //           max: 2000,
-  //           splitLine: {
-  //             show: false
-  //           }
-  //         }
-  //       ],
-  //       series: [
-  //         {
-  //           name: '人流量',
-  //           data: [1000, 1200, 900, 1500, 900, 1200, 1000],
-  //           type: 'line',
-  //           smooth: true,
-  //           lineArea: {
-  //             show: true,
-  //             gradient: ['rgba(251, 114, 147, 1)', 'rgba(251, 114, 147, 0)']
-  //           },
-  //           lineStyle: {
-  //             stroke: 'rgba(251, 114, 147, 1)',
-  //             lineDash: [3, 3]
-  //           },
-  //           linePoint: {
-  //             style: {
-  //               stroke: 'rgba(251, 114, 147, 1)'
-  //             }
-  //           },
-  //           yAxisIndex: 1
-  //         },
-  //         {
-  //           name: '销售额',
-  //           data: [1500, 1700, 1400, 2000, 1400, 1700, 1500],
-  //           type: 'bar',
-  //           gradient: {
-  //             color: ['rgba(103, 224, 227, .6)', 'rgba(103, 224, 227, .1)']
-  //           },
-  //           barStyle: {
-  //             stroke: 'rgba(103, 224, 227, 1)'
-  //           }
-  //         }
-  //       ]
-  //     }
+  },
+  methods: {
+    setConfig (config) {
+      const option = this.option
+      const legend = this.getLegend(config)
+      const xAxis = this.getXAxis(config, legend)
+      const series = this.getSeries(config)
 
-  //     return option
-  //   }
-  // },
-  // mounted () {
-  //   this.$nextTick(() => {
-  //     this.initChart()
-  //   })
-  // }
+      this.option = {
+        ...option,
+        legend,
+        xAxis,
+        series
+      }
+    },
+    getLegend (config) {
+      const legend = this.option.legend
+      const confData = config.data
+
+      let data = legend.data
+      let keys = Object.keys(confData)
+
+      data = data.map((item, idx) => {
+        const item2 = confData[keys[idx]]
+        if (item2) {
+          item.name = item2.title
+        }
+
+        return { ...item }
+      })
+
+      return {
+        ...legend,
+        data
+      }
+    },
+    getXAxis (config, legend) {
+      const line1 = config.data.line1
+      const xAxis = this.option.xAxis
+
+      const data = line1.data.map(item => {
+        return moment(item.datetime).format('MM/DD')
+      })
+
+      return {
+        ...xAxis,
+        data
+      }
+    },
+    getSeries (config) {
+      let confData = config.data
+      let keys = Object.keys(confData)
+      const series = this.option.series
+
+      return series.map((item, idx) => {
+        let key = keys[idx]
+        let data = confData[key]
+        if (data) {
+          data = data.data
+          data = data.map(d => d.value)
+        } else {
+          data = []
+        }
+
+        return {
+          ...item,
+          data
+        }
+      })
+    }
+  }
 }
 </script>
 <style lang="less" scoped>
