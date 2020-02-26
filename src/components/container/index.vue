@@ -1,10 +1,10 @@
-<template>
-  <div class="container">
+<template> <div class="container">
     <div class="bmap-wrap-box">
       <slot name="bmap-com"></slot>
     </div>
     <div class="con-main">
-      <div class="m-wrap-box">
+      <slot name="digital-flag"></slot>
+      <!-- <div class="m-wrap-box">
         <dv-border-box-13>
           <div class="digital-flag">显示屏设备</div>
           <dv-digital-flop :config="{number: [100],content: '{nt}台', style:{fontSize: 24, textAlign:'right'}}"/>
@@ -17,7 +17,7 @@
           <div class="digital-flag">覆盖人群</div>
           <dv-digital-flop :config="{number: [100],content: '{nt}人', style:{fontSize: 24, textAlign:'right'}}"/>
         </dv-border-box-13>
-      </div>
+      </div> -->
     </div>
     <div class="con-left" style="display: flex;">
       <div class="le-top">
@@ -72,30 +72,6 @@ export default {}
   height: 100%;
   // border: 1px solid red;
   box-sizing: border-box;
-  .m-wrap-box {
-    width: 80%;
-    height: 100px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    // border: 1px solid red;
-    &>div {
-      flex: 0 1 30%;
-    }
-    .digital-flag {
-      position: absolute;
-      top: 22px;
-      left: 18px;
-    }
-  }
-
-  .border-box-content .dv-digital-flop {
-    width: 85%;
-    height: 30px;
-    position: absolute;
-    right: 0;
-    bottom: 5px;
-  }
 }
 .con-left {
   order: -1;

@@ -5,6 +5,7 @@
         <Container class="main-container">
           <EarlyWarnBoard slot="early-warn-board" :config="earlyConf"></EarlyWarnBoard>
           <MonitTrendChart slot="monit-trend-chart" :config="monitConf"></MonitTrendChart>
+          <DigitalFlag slot="digital-flag" :config="digitalConf"></DigitalFlag>
           <MediaDistrictPie slot="media-district-pie" :config="mediaConf"></MediaDistrictPie>
           <trafficStatic slot="traffic-static" :config="trafficConf"></trafficStatic>
           <BmapComponent slot="bmap-com" :config="bmapConf"></BmapComponent>
@@ -46,6 +47,7 @@ import MediaDistrictPie from './media-district-pie'
 import trafficStatic from './traffic-static'
 import BmapComponent from './bmap-component'
 import VideoMonitor from './video-monitor'
+import DigitalFlag from './digital-flag'
 // import TopLeftCmp from './TopLeftCmp'
 // import TopMiddleCmp from './TopMiddleCmp'
 // import TopRightCmp from './TopRightCmp'
@@ -68,7 +70,8 @@ export default {
     MonitTrendChart,
     MediaDistrictPie,
     trafficStatic,
-    VideoMonitor
+    VideoMonitor,
+    DigitalFlag
     // TopLeftCmp,
     // TopMiddleCmp,
     // TopRightCmp,
@@ -87,13 +90,17 @@ export default {
       mediaConf: {},
       trafficConf: {},
       bmapConf: {},
-      videaConf: {}
+      videaConf: {},
+      digitalConf: []
     }
   },
   methods: {
     initData () {
       getData().then(({ data }) => {
+        console.log(data)
         this.earlyConf = this.getEarlyConf(data)
+        this.monitConf = this.getMonitorConf(data.todaymission)
+        this.digitalConf = this.getDigtalConf(data.introduction)
       })
     },
     getEarlyConf (data) {
@@ -104,7 +111,18 @@ export default {
       }
 
       return earlyConf
+    },
+    getMonitorConf (conf) {
+      return {
+        ...conf
+      }
+    },
+    getDigtalConf (conf) {
+      return [...conf]
     }
+  },
+  mounted () {
+    this.$nextTick(() => this.initData())
   }
 }
 </script>
