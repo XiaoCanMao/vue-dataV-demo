@@ -5,72 +5,64 @@
   </div>
 </template>
 <script>
+import { getOption1, getOption2 } from './options'
 
 export default {
+  props: {
+    config: {
+      type: Array,
+      default () {
+        return []
+      }
+    }
+  },
+  watch: {
+    config (val, old) {
+      this.setOption(val)
+    }
+  },
   data () {
-    let series = {
-      type: 'gauge',
-      startAngle: -Math.PI / 2,
-      endAngle: Math.PI * 1.5,
-      arcLineWidth: 8,
-      axisLabel: {
-        show: false
-      },
-      axisTick: {
-        show: false
-      },
-      pointer: {
-        show: false
-      },
-      dataItemStyle: {
-        lineCap: 'round'
-      },
-      details: {
-        show: true,
-        formatter: '{value}',
-        style: {
-          fill: '#1ed3e5',
-          fontSize: 16
-        },
-        offset: [0, 12]
-      }
-    }
-    let gradient = ['#03c2fd', '#1ed3e5', '#2fded6']
-    let title = {
-      offset: [0, 21],
-      style: {
-        fill: '#fff'
-        // fill: '#1ed3e5'
-      }
-    }
+    const option1 = getOption1()
+    const option2 = getOption2()
+
     return {
-      option1: {
-        title: {
-          ...title,
-          text: '车流'
-        },
-        series: [
-          {
-            ...series,
-            data: [
-              { name: '人流', value: 89, gradient: ['#03c2fd', '#1ed3e5', '#2fded6'] }
-            ]
+      option1,
+      option2
+    }
+  },
+  methods: {
+    setOption (config) {
+      this.setOption1(config, getOption1())
+      this.setOption2(config, getOption2())
+    },
+    setOption1 (config, option) {
+      this.option1 = this.getOptions(config, option)
+    },
+    setOption2 (config, option) {
+      this.option2 = this.getOptions(config, option)
+    },
+    getOptions (conf, option) {
+      let series = option.series
+      series = series.map((item, index) => {
+        let data = item.data
+
+        data = data.map(item => {
+          return {
+            ...item,
+            name: conf[index].title,
+            value: conf[index].value
           }
-        ]
-      },
-      option2: {
-        title: {
-          ...title,
-          text: '人流'
-        },
-        series: [
-          {
-            ...series,
-            data: [
-              { name: '人流', value: 89, gradient }
-            ]
-          }
-        ]
+        })
+
+        return {
+          ...item,
+          data
+        }
+      })
+
+      return {
+        ...option,
+        series
       }
     }
   }

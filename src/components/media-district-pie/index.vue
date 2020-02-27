@@ -3,10 +3,12 @@
     <!-- <div ref="chart"></div> -->
     <dv-charts class="lc2-chart" :option="option1" />
     <dv-charts class="lc2-chart" :option="option2" />
+    <!-- <dv-charts class="lc2-chart" :option="option2" /> -->
   </div>
 </template>
 <script>
-import echart from 'echarts'
+import { getOption1, getOption2 } from './options'
+
 export default {
   props: {
     config: {
@@ -34,79 +36,19 @@ export default {
     }
   },
   data () {
-    let color = ['#00baff', '#3de7c9', '#fff', '#ffc530', '#469f4b']
-    let title = {
-      text: '媒体分布',
-      style: {
-        fill: '#fff',
-        fontSize: 12
-      },
-      offset: [0, 110]
-    }
-
-    let series = {
-      type: 'pie',
-      data: [],
-      radius: ['30%', '40%'],
-      center: ['50%', '40%'],
-      insideLabel: {
-        show: false
-      },
-      outsideLabel: {
-        labelLineEndLength: 5,
-        formatter: '{percent}%\n{name}',
-        style: {
-          fontSize: 8,
-          fill: '#fff'
-        }
-      }
-    }
+    const option1 = getOption1()
+    const option2 = getOption2()
 
     return {
-      option1: {
-        title: {
-          ...title,
-          text: '在刊媒体分布'
-        },
-        series: [
-          {
-            ...series,
-            data: [
-              // { name: '收费系统', value: 93 },
-              // { name: '通信系统', value: 32 },
-              // { name: '监控系统', value: 65 },
-              // { name: '供配电系统', value: 44 },
-              // { name: '其他', value: 52 }
-            ]
-          }
-        ],
-        color
-      },
-      option2: {
-        title: {
-          ...title,
-          text: '下刊媒体分布'
-        },
-        series: [
-          {
-            ...series,
-            data: [
-              // { name: '收费系统', value: 93 },
-              // { name: '通信系统', value: 32 },
-              // { name: '监控系统', value: 65 },
-              // { name: '供配电系统', value: 44 },
-              // { name: '其他', value: 52 }
-            ]
-          }
-        ]
-      }
+      option1,
+      option2
     }
   },
   methods: {
     setOption (config) {
       const data = config.data
-      this.setOption1(data[0], this.option1)
-      this.setOption2(data[1], this.option2)
+      this.setOption1(data[0], getOption1())
+      this.setOption2(data[1], getOption2())
     },
     setOption1 (data, option) {
       this.option1 = this.getOptions(data, option)

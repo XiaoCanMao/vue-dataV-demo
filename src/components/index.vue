@@ -88,7 +88,7 @@ export default {
       earlyConf: {},
       monitConf: {},
       mediaConf: {},
-      trafficConf: {},
+      trafficConf: [],
       bmapConf: {},
       videaConf: {},
       digitalConf: []
@@ -102,6 +102,7 @@ export default {
         this.monitConf = this.getMonitorConf(data.todaymission)
         this.digitalConf = this.getDigtalConf(data.introduction)
         this.mediaConf = this.getMediaConf(data.media)
+        this.trafficConf = this.getTrafficConf(data.flow)
       })
     },
     getEarlyConf (data) {
@@ -125,6 +126,9 @@ export default {
       return {
         ...conf
       }
+    },
+    getTrafficConf (conf) {
+      return conf
     }
   },
   mounted () {
