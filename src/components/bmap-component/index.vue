@@ -16,17 +16,19 @@ export default {
   },
   methods: {
     initMap () {
-      debugger;
-
-      let wrap = this.$refs.mapBox
-      let map = new global.BMap.Map(wrap)
-
-      console.log(global.BMap, 11111111111111)
-      map.centerAndZoom(new global.BMap.Point(120.775208, 30.772706), 13)
-      map.enableScrollWheelZoom()
-      map.setMapStyleV2({
-        styleId: 'f2298a511d465dd5529f8bda2c7f26e4'
+      let inmap = new global.inMap.Map({
+        id: 'bmap-com',
+        skin: 'Blueness',
+        center: [120.775208, 30.772706],
+        zoom: {
+          value: 13,
+          show: true,
+          max: 18,
+          min: 5
+        }
       })
+
+      let map = inmap._map
 
       // 先创建初始marker点
       getplayer().then(result => {
