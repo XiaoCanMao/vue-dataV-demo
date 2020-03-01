@@ -38,7 +38,7 @@ export default {
   },
   data () {
     return {
-      isShow: true,
+      isShow: false,
       accessToken: '',
       dataList: [],
       showSwiper: true,

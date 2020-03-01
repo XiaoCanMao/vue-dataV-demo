@@ -11,28 +11,6 @@
           <BmapComponent slot="bmap-com" :config="bmapConf"></BmapComponent>
           <VideoMonitor slot="video-monitor" :config="videaConf"></VideoMonitor>
         </Container>
-      <!-- <dv-border-box-1 class="main-container"> -->
-        <!-- <div class="mc-top"> -->
-          <!-- <Top-Left-Cmp />
-          <Top-Middle-Cmp />
-          <Top-right-Cmp /> -->
-        <!-- </div> -->
-        <!-- <div class="mc-bottom"> -->
-          <!-- <dv-border-box-6 class="bottom-left-container">
-            <dv-decoration-4 class="mcb-decoration-1" style="width:5px;height:45%;" />
-            <dv-decoration-4 class="mcb-decoration-2" style="width:5px;height:45%;" />
-            <Bottom-Left-Chart-1 />
-            <Bottom-Left-Chart-2 />
-          </dv-border-box-6> -->
-
-          <!-- <div class="bottom-right-container">
-            <Bottom-Right-Table-1 />
-            <Bottom-Right-Table-2 />
-            <Bottom-Right-Table-3 />
-            <Bottom-Right-Table-4 />
-          </div> -->
-        <!-- </div> -->
-      <!-- </dv-border-box-1> -->
       </dv-full-screen-container>
      </div>
 </template>
