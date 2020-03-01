@@ -10,8 +10,8 @@ let title = {
 let series = {
   type: 'pie',
   data: [],
-  radius: ['30%', '40%'],
-  center: ['50%', '40%'],
+  radius: ['50%', '60%'],
+  center: ['50%', '45%'],
   insideLabel: {
     show: false
   },

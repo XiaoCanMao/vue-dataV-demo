@@ -36,7 +36,10 @@ export default {
   .digital-flag {
     position: absolute;
     top: 22px;
-    left: 18px;
+    top: 22px;
+    left: 0;
+    width: 100%;
+    text-align: center;
   }
   .dv-digital-flop {
     width: 85%;
