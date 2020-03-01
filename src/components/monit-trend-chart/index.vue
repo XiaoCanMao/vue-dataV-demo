@@ -45,6 +45,9 @@ export default {
             fill: '#fff'
           }
         },
+        grid: {
+          left: '15%'
+        },
         xAxis: {
           data: [
             '10/01', '10/02', '10/03', '10/04', '10/05', '10/06', '10/07'
@@ -63,40 +66,32 @@ export default {
             show: false
           }
         },
-        yAxis: {
-          data: 'value',
-          splitLine: {
-            show: false
-          },
-          axisLine: {
-            style: {
-              stroke: '#999'
-            }
-          },
-          axisLabel: {
-            style: {
-              fill: '#999'
-            }
-          },
-          axisTick: {
-            show: false
+        yAxis: [
+          {
+            position: 'left',
+            data: 'value',
+            splitLine: {
+              show: false
+            },
+            axisLine: {
+              style: {
+                stroke: '#999'
+              }
+            },
+            axisLabel: {
+              style: {
+                fill: '#999'
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            min: 0
           }
-          // min: 0,
-          // max: 8
-        },
+        ],
         series: [
           {
-            name: '收费系统',
-            data: [
-              2.5, 3.5, 6.5, 6.5, 7.5, 6.5, 2.5
-            ],
-            type: 'bar',
-            barStyle: {
-              fill: 'rgba(0, 186, 255, 0.4)'
-            }
-          },
-          {
-            name: '监控系统',
+            name: '媒体数',
             data: [
               2.5, 3.5, 6.5, 6.5, 7.5, 6.5, 2.5
             ],
@@ -113,11 +108,11 @@ export default {
             }
           },
           {
+            name: '报警媒体数',
             data: [
               0.2, 1.2, 4.2, 4.2, 5.2, 4.2, 0.2
             ],
             type: 'line',
-            name: '供配电系统',
             lineArea: {
               show: true,
               gradient: ['rgba(245, 217, 79, 0.8)', 'rgba(245, 217, 79, 0.2)']
@@ -132,6 +127,16 @@ export default {
                 stroke: 'transparent'
               }
             }
+          },
+          {
+            name: '监播次数',
+            data: [
+              2.5, 3.5, 6.5, 6.5, 7.5, 6.5, 2.5
+            ],
+            type: 'bar',
+            barStyle: {
+              fill: 'rgba(0, 186, 255, 0.4)'
+            }
           }
         ]
       }
@@ -140,36 +145,14 @@ export default {
   methods: {
     setConfig (config) {
       const option = this.option
-      const legend = this.getLegend(config)
-      const xAxis = this.getXAxis(config, legend)
+      // const legend = this.getLegend(config)
+      const xAxis = this.getXAxis(config)
       const series = this.getSeries(config)
 
       this.option = {
         ...option,
-        legend,
         xAxis,
         series
-      }
-    },
-    getLegend (config) {
-      const legend = this.option.legend
-      const confData = config.data
-
-      let data = legend.data
-      let keys = Object.keys(confData)
-
-      data = data.map((item, idx) => {
-        const item2 = confData[keys[idx]]
-        if (item2) {
-          item.name = item2.title
-        }
-
-        return { ...item }
-      })
-
-      return {
-        ...legend,
-        data
       }
     },
     getXAxis (config, legend) {
@@ -187,7 +170,8 @@ export default {
     },
     getSeries (config) {
       let confData = config.data
-      let keys = Object.keys(confData)
+
+      let keys = ['line1', 'line2', 'columnar']
       const series = this.option.series
 
       return series.map((item, idx) => {
