@@ -1,20 +1,16 @@
-import $ from 'jquery'
-// import axios from 'axios'
 const HOST = '129.211.166.170'
-const API_URL = `/addons/ledplayer/api/getdata.html`
-// const API_URL = `http://${HOST}/addons/ledplayer/api/getdata.html`
-
-// const instance = ginAxios.create({
-//   baseURL: API_URL,
-//   timeout: 10000,
-//   headers: {'Access-Control-Allow-Origin': '*'}
-// })
+const API_URL = `http://${HOST}/addons/ledplayer/api/getdata.html`
+const API_URL2 = `http://${HOST}/addons/ledplayer/api/getlives`
+const API_URL3 = `http://${HOST}/addons/ledplayer/api/getliveaccesstoken`
 
 export function getData () {
-  // return axios(API_URL)
-  return new Promise(resolve => {
-    $.getJSON(API_URL, data => {
-      resolve(data)
-    })
-  })
+  return fetch(API_URL).then(res => res.json())
+}
+
+export function getVideoList () {
+  return fetch(API_URL2).then(res => res.json())
+}
+
+export function getAccesstoken () {
+  return fetch(API_URL3).then(res => res.json())
 }
